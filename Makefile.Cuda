@@ -46,7 +46,7 @@ TARGET := autodock
 TOOL_TARGET := adgpu_analysis
 
 IFLAGS=-I$(COMMON_DIR) -I$(HOST_INC_DIR) -I$(GPU_INCLUDE_PATH) -I$(KRNL_DIR)
-LFLAGS=-L$(GPU_LIBRARY_PATH) -Wl,-rpath=$(GPU_LIBRARY_PATH):$(CPU_LIBRARY_PATH)
+LFLAGS=-L$(GPU_LIBRARY_PATH) -Wl,-rpath=$(GPU_LIBRARY_PATH):$(CPU_LIBRARY_PATH):/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11 -lstdc++
 CFLAGS=-std=c++17 $(IFLAGS) $(LFLAGS)
 TOOL_CFLAGS=-std=c++17 -I$(COMMON_DIR) -I$(HOST_INC_DIR)
 
@@ -194,7 +194,7 @@ otool:
 	$(shell ls $(HOST_SRC_DIR)/*.cpp) \
 	$(TOOL_CFLAGS) \
 	-o$(BIN_DIR)/$(TOOL_TARGET) \
-	$(PIPELINE) $(NVTENSOR) $(OPT) -DTOOLMODE $(REP)
+	$(PIPELINE) $(NVTENSOR) $(OPT) -DTOOLMODE $(REP) -L/usr/lib/gcc/x86_64-linux-gnu/11 -lc -lm -lgcc_s -lgcc -lstdc++
 
 odock: check-env-all kernels
 	@echo "Building" $(TARGET) "..."
